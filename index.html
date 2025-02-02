@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>User Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Tracker</title>
 </head>
 <body>
-  <h1>Welcome!</h1>
-  <p>Your visit is being tracked.</p>
-  <script src="tracker.js"></script>
+    <h1>Welcome to the User Tracker Page</h1>
+
+    <script>
+        // Collect user information
+        const userInfo = {
+            userAgent: navigator.userAgent,
+            language: navigator.language,
+            platform: navigator.platform,
+            screenResolution: `${screen.width}x${screen.height}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        };
+
+        // Send data to the Telegram bot
+        fetch('https://api.telegram.org/bot7409054007:AAEpqTyev5AKyz-n7s2sPps7lLWH4Snl7a4/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: '@Usertrackerofficial_bot', 
+                text: `New User Info:\n\nUser Agent: ${userInfo.userAgent}\nLanguage: ${userInfo.language}\nPlatform: ${userInfo.platform}\nScreen Resolution: ${userInfo.screenResolution}\nTimezone: ${userInfo.timezone}`
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    </script>
 </body>
 </html>
